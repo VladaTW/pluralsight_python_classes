@@ -25,6 +25,9 @@ class Flight:
     def aircraft_model(self):
         return self._aircraft.model()
 
+    def aircraft_seating_plan(self):
+        return self._aircraft.seating_plan()
+
 
 class Aircraft:
 
@@ -46,3 +49,5 @@ class Aircraft:
     def num_seats_per_row(self):
         return self._num_seats_per_row
 
+    def seating_plan(self):
+        return (range(1, self._num_rows + 1), "ABCDEFGHJK"[:self._num_seats_per_row])
