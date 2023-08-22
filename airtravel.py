@@ -34,14 +34,15 @@ class Aircraft:
         self._num_rows = num_rows
         self._num_seats_per_row = num_seats_per_row
 
-        def registration(self):
-            return self._registration
+    def registration(self):
+        return self._registration
 
-        def model(self):
-            return self._model
+    def model(self):
+        return self._model
 
-        def num_rows(self):
-            return self._num_rows
+    def num_rows(self):
+        return self._num_rows
 
-        def seating_plan(self):
-            return (range(1, self._num_rows + 1), "ABCDEFGHJK"[:self._num_seats_per_row])
+    def num_seats_per_row(self):
+        return self._num_seats_per_row
+
