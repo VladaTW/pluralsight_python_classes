@@ -46,22 +46,21 @@ class Flight:
 
         self._seating[row][letter] = passenger
 
-
     def _parse_seat(self, seat):
         rows, seat_letters = self._aircraft.seating_plan()
-        letter = seat[-1]
 
+        letter = seat[-1]
         if letter not in seat_letters:
-            raise ValueError(f"Invalid seat letter '{letter}'")
+            raise ValueError(f"Invalid seat letter {letter}")
 
         row_text = seat[:-1]
         try:
             row = int(row_text)
         except ValueError:
-            raise ValueError(f"Invalid seat row '{row_text}'")
+            raise ValueError(f"Invalid seat row {row_text}")
 
-        if not row in rows:
-            raise ValueError(f"Invalid row number '{row}'")
+        if row not in rows:
+            raise ValueError(f"Invalid row number {row}")
         return row, letter
 
     def relocate_passenger(self, from_seat, to_seat):
@@ -77,7 +76,7 @@ class Flight:
 
         from_row, from_letter = self._parse_seat(from_seat)
         if self._seating[from_row][from_letter] is None:
-            raise ValueError(f"No passenger to relocate in seat '{from_seat}'")
+            raise ValueError(f"No passenger to relocate in seat {from_seat}")
 
         to_row, to_letter = self._parse_seat(to_seat)
         if self._seating[to_row][to_letter] is not None:
@@ -85,7 +84,6 @@ class Flight:
 
         self._seating[to_row][to_letter] = self._seating[from_row][from_letter]
         self._seating[from_row][from_letter] = None
-
 
     def num_available_seats(self):
         return sum(sum(1 for s in row.values() if s is None)
@@ -106,16 +104,20 @@ class Flight:
                     yield (passenger, f"{row}{letter}")
 
 
-
-
-
-class AirbusA319:
+class Aircraft:
 
     def __init__(self, registration):
         self._registration = registration
 
     def registration(self):
         return self._registration
+
+    def num_seats(self):
+        rows, row_seats = self.seating_plan()
+        return len(rows) * len(row_seats)
+
+
+class AirbusA319(Aircraft):
 
     def model(self):
         return "Airbus A319"
@@ -123,19 +125,17 @@ class AirbusA319:
     def seating_plan(self):
         return range(1, 23), "ABCDEF"
 
-class Boeing777:
 
-    def __init__(self, registration):
-        self._registration = registration
-
-    def registration(self):
-        return self._registration
+class Boeing777(Aircraft):
 
     def model(self):
         return "Boeing 777"
 
     def seating_plan(self):
+        # For simplicity's sake, we ignore complex
+        # seating arrangement for first-class
         return range(1, 56), "ABCDEGHJK"
+
 
 def console_card_printer(passenger, seat, flight_number, aircraft):
     output = (
