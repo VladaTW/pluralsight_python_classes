@@ -109,28 +109,33 @@ class Flight:
 
 
 
-class Aircraft:
+class AirbusA319:
 
-    def __init__(self, registration, model, num_rows, num_seats_per_row):
+    def __init__(self, registration):
         self._registration = registration
-        self._model = model
-        self._num_rows = num_rows
-        self._num_seats_per_row = num_seats_per_row
 
     def registration(self):
         return self._registration
 
     def model(self):
-        return self._model
-
-    def num_rows(self):
-        return self._num_rows
-
-    def num_seats_per_row(self):
-        return self._num_seats_per_row
+        return "Airbus A319"
 
     def seating_plan(self):
-        return (range(1, self._num_rows + 1), "ABCDEFGHJK"[:self._num_seats_per_row])
+        return range(1, 23), "ABCDEF"
+
+class Boeing777:
+
+    def __init__(self, registration):
+        self._registration = registration
+
+    def registration(self):
+        return self._registration
+
+    def model(self):
+        return "Boeing 777"
+
+    def seating_plan(self):
+        return range(1, 56), "ABCDEGHJK"
 
 def console_card_printer(passenger, seat, flight_number, aircraft):
     output = (
@@ -148,11 +153,18 @@ def console_card_printer(passenger, seat, flight_number, aircraft):
     print()
 
 
-def make_flight():
-    f = Flight("BA758", Aircraft('G-EUPT','Airbus A319', num_rows=22, num_seats_per_row = 6))
+def make_flights():
+    f = Flight("BA758", AirbusA319("G-EUPT"))
     f.allocate_seat("12A", "Guido van Rossum")
     f.allocate_seat("15F", "Bjarne Stroustrup")
     f.allocate_seat("15E", "Anders Hejlsberg")
     f.allocate_seat("1C", "John McCarthy")
     f.allocate_seat("1D", "Richard Hickey")
-    return f
+
+    g = Flight("AF72", Boeing777("F-GSPS"))
+    g.allocate_seat('55K', 'Larry Wall')
+    g.allocate_seat('33G', 'Yukihiro Matsumoto')
+    g.allocate_seat('4B', 'Brian Kernighan')
+    g.allocate_seat('4A', 'Dennis Ritchie')
+
+    return f, g
