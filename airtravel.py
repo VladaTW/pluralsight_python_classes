@@ -109,7 +109,6 @@ class Flight:
 
 
 
-
 class Aircraft:
 
     def __init__(self, registration, model, num_rows, num_seats_per_row):
